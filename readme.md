@@ -1,103 +1,69 @@
-📌 Front-Api-ToDo-List
+# 📋 Frontend To-Do List
 
-Uma interface front-end responsiva para gerenciar tarefas (To-Do List) consumindo uma API RESTful back-end — ideal para demonstrar integração entre cliente e servidor em aplicações web modernas.
+> Projeto desenvolvido como parte do desafio do Módulo 3. Uma aplicação web de lista de tarefas moderna, responsiva e integrada a uma API REST.
 
-👉 Este projeto foi desenvolvido para funcionar em conjunto com a API de tarefas disponível em:
+## 💻 Sobre o Projeto
 
-🔗 Projeto‑ToDo‑List‑Api (Back‑End)
+Este projeto tem como objetivo colocar em prática os conhecimentos de **Front-end** consumindo uma API real. O desafio foi criar uma interface limpa, semântica e totalmente responsiva, seguindo a metodologia **Mobile-First**.
 
-🚀 Descrição
+A aplicação permite ao usuário gerenciar suas tarefas (Criar, Ler, Atualizar e Deletar) com feedback visual imediato e persistência de dados no servidor.
 
-O Front-Api-ToDo-List é uma aplicação web que permite ao usuário criar, visualizar, atualizar e excluir tarefas através de uma interface intuitiva. Ele consome os endpoints de uma API REST construída em Node.js com Express e Sequelize para gerenciar dados de tarefas, promovendo uma experiência full-stack completa.
+## ⚙️ Funcionalidades
 
-🧠 Funcionalidades
+-   **Adicionar Tarefa:** Criação de tarefas com título, descrição e status inicial.
+-   **Listagem Dinâmica:** Exibição das tarefas vindas da API em cards organizados.
+-   **Atualização de Status:**
+    -   Interface intuitiva com botões de seleção (Radio Group) para mudar entre "A Fazer", "Em Andamento" e "Concluída".
+    -   Indicação visual colorida para cada estado.
+-   **Exclusão:** Remoção de tarefas do banco de dados.
+-   **Responsividade:** Layout adaptável que funciona perfeitamente em celulares (coluna única) e desktops (layout em grade/lado a lado).
+-   **Feedback Visual:** Indicadores de carregamento ("Enviando...", "Carregando...") para melhor experiência do usuário.
 
-✔️ Listar todas as tarefas cadastradas via API
-✔️ Adicionar novas tarefas com descrição
-✔️ Marcar tarefas como concluídas ou pendentes
-✔️ Editar e excluir tarefas
-✔️ Interface reativa usando JavaScript para comunicação com o servidor
+## 🛠 Tecnologias Utilizadas
 
-🧩 Tecnologias Utilizadas
-Camada	Tecnologias
-Front-end	HTML, CSS e JavaScript
-Comunicação com API	Fetch / AJAX
-API Back-end (requerida)	Node.js, Express, Sequelize (via Projeto-ToDo-List-Api)
-Banco de dados (API)	SQLite
-📦 Pré-requisitos
+O projeto foi desenvolvido sem o uso de frameworks pesados, focando na performance e nos fundamentos da web:
 
-Antes de rodar o front-end, você deve:
+-   **HTML5 Semântico:** Uso correto de tags como `<header>`, `<main>`, `<section>`, `<article>` e `<footer>` para acessibilidade e SEO.
+-   **CSS3 Moderno:**
+    -   **Mobile-First:** Estilos base focados em telas pequenas.
+    -   **Flexbox & Grid:** Para estruturação do layout.
+    -   **CSS Variables:** Para consistência de cores e fácil manutenção.
+    -   **UI Polida:** Estilização customizada de inputs e botões de rádio para uma aparência de "app nativo".
+-   **JavaScript (ES6+):**
+    -   **Fetch API:** Para comunicação assíncrona com o servidor (`GET`, `POST`, `PATCH`, `DELETE`).
+    -   **Async/Await:** Para código mais limpo e legível.
+    -   **Manipulação do DOM:** Geração dinâmica de HTML.
+    -   **Arquitetura Organizada:** Separação lógica entre camada de API e camada de Interface no mesmo arquivo.
 
-Ter a API ToDo List (back-end) rodando localmente ou em algum servidor.
+## 📂 Estrutura de Arquivos
 
-Siga as instruções da repo: Projeto‑ToDo‑List‑Api (Back‑End)
-
-Ter um ambiente com:
-
-Navegador moderno (Chrome, Firefox, etc.)
-
-(Opcional) Servidor HTTP local como Live Server / http-server
-
-📌 Instalação e Execução
-
-Clone este repositório:
-
-git clone https://github.com/lucasrgbarbosa/Front-Api-ToDo-List.git
-
-
-Acesse a pasta:
-
-cd Front-Api-ToDo-List
-
-
-Abra o arquivo index.html com um navegador:
-
-Duplo clique ou
-
-Sirva via Live Server / http-server:
-
-npx http-server .
-
-
-Assegure-se que a API esteja rodando e acessível no endpoint configurado no código front-end (em geral http://localhost:3000/api/v1/tarefas).
-
-🛠️ Como Funciona a Conexão com a API
-
-Este front-end se comunica com a API usando chamadas HTTP (fetch) para os seguintes recursos do back-end:
-
-Ação	Endpoint
-Criar tarefa	POST /api/v1/tarefas
-Listar tarefas	GET /api/v1/tarefas
-Atualizar tarefa	PUT /api/v1/tarefas/:id
-Atualizar status	PATCH /api/v1/tarefas/:id/status
-Deletar tarefa	DELETE /api/v1/tarefas/:id
-
-Os endpoints fazem parte da API construída em Node.js com Express e Sequelize no repositório Projeto-ToDo-List-Api.
-
-📁 Estrutura do Projeto
-Front-Api-ToDo-List/
+```text
+/
+├── index.html          # Estrutura principal e semântica da página
 ├── css/
-│   └── estilos.css
+│   └── style.css       # Estilos globais, reset e responsividade
 ├── js/
-│   └── main.js
-├── index.html
-└── README.md
+│   └── app.js          # Lógica unificada (API + DOM + Eventos)
+└── README.md           # Documentação do projeto
+````
 
-💡 Melhorias Futuras
+🚀 Como Executar o Projeto
+Como este projeto utiliza apenas tecnologias nativas (Vanilla), não é necessário instalar dependências (como node_modules).
 
-✨ Deploy da aplicação (Vercel, Netlify)
-✨ Autenticação de usuários
-✨ Feedback visual ao adicionar/editar tarefas
-✨ Ajustes de responsividade para mobile
+Clone o repositório:
 
-🧑‍💻 Contribuição
+Bash
+git clone [https://github.com/lucasrgbarbosa/Front-Api-ToDo-List.git](https://github.com/lucasrgbarbosa/Front-Api-ToDo-List.git)
+Abra o projeto: Basta abrir o arquivo index.html em qualquer navegador moderno.
 
-Contribuições são bem-vindas! Você pode:
+Dica: Para uma melhor experiência (e evitar bloqueios de CORS em alguns navegadores), recomendo usar a extensão Live Server do VS Code.
 
-Abrir uma issue relatando bugs ou sugerindo melhorias
+🔗 API Utilizada
+O projeto consome a seguinte API REST:
 
-Criar um pull request com novas funcionalidades
+Endpoint Base: https://duo-project-mtrhee.onrender.com/api/v1/tarefas
 
-📄 Licença
+Nota: Como a API está hospedada no Render (plano gratuito), a primeira requisição pode demorar alguns segundos para "acordar" o servidor.
 
-Este projeto está sob a licença MIT. Sinta-se à vontade para usar, modificar e distribuir o código com os devidos créditos.
+✒️ Autor
+Desenvolvido por Lucas Ribeiro.
