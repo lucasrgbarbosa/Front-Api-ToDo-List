@@ -5,12 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Lista de Tarefas</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
   <header>
     <h1>📋 Lista de Tarefas</h1>
+    <p class="subtitle">Organize suas tarefas de forma simples e eficiente</p>
   </header>
 
   <main>
@@ -22,7 +24,7 @@
             <input type="text" name="descricao" placeholder="Descrição da tarefa" required />
         </div>
         <select name="status">
-          <option value="a fazer">Pendente</option>
+          <option value="nao iniciado">Não iniciado</option>
           <option value="em andamento">Em andamento</option>
           <option value="concluída">Concluída</option>
         </select>
@@ -38,6 +40,12 @@
   </main>
 
   <script src="js/app.js"></script>
-  <footer> Desenvolvido por Lucas Ribeiro</footer>
+  <footer> 
+    <p>Desenvolvido por Lucas Ribeiro</p>
+    <a href="https://github.com/lucasrgbarbosa" target="_blank" rel="noopener noreferrer" aria-label="Link para o GitHub">
+      <i class="fab fa-github"></i>
+    </a>
+
+  </footer>
 </body>
 </html>

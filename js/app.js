@@ -55,7 +55,7 @@ function criarItemHTML(tarefa) {
         <label>
             Status:
             <select class="status-select">
-                <option value="a fazer" ${isSelected('a fazer')}>A Fazer</option>
+                <option value="nao iniciado" ${isSelected('nao iniciado')}>Não iniciado</option>
                 <option value="em andamento" ${isSelected('em andamento')}>Em andamento</option>
                 <option value="concluída" ${isSelected('concluída')}>Concluída</option>
             </select>
