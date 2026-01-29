@@ -52,6 +52,10 @@ main {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+.list-section{
+ text-align: center;
+}
+
 form {
   display: flex;
   flex-direction: column;
@@ -111,6 +115,8 @@ li {
 
 li strong { font-size: 1.1rem; display: block; margin-bottom: 4px;}
 li span { color: #666; font-size: 0.95rem; }
+
+
 
 .task-footer {
   display: flex;
