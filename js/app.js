@@ -1,6 +1,4 @@
-// =========================================================
-// 1. CAMADA DE API (Comunicação com o Servidor)
-// =========================================================
+// API MODULE
 const API_URL = "https://duo-project-mtrhee.onrender.com/api/v1/tarefas";
 
 async function apiFetch(endpoint, method = 'GET', body = null) {
@@ -13,10 +11,8 @@ async function apiFetch(endpoint, method = 'GET', body = null) {
 
     const response = await fetch(endpoint, options);
     
-    // Tratamento simples de erro da API
     if (!response.ok) throw new Error(`Erro na requisição: ${response.status}`);
     
-    // Se for DELETE ou status 204, pode não ter JSON
     if (response.status === 204) return null; 
     
     return await response.json();
@@ -27,7 +23,7 @@ async function apiFetch(endpoint, method = 'GET', body = null) {
   }
 }
 
-// Funções específicas da API
+// Funções da API
 const API = {
   getTarefas: async () => await apiFetch(API_URL),
   
@@ -38,13 +34,13 @@ const API = {
   updateStatus: async (id, status) => await apiFetch(`${API_URL}/${id}/status`, 'PATCH', { status })
 };
 
-// =========================================================
-// 2. CAMADA DE INTERFACE (Manipulação do DOM)
-// =========================================================
+
+// INTERFACE DOM
+
 const form = document.getElementById("task-form");
 const list = document.getElementById("task-list");
 
-// Gera o HTML de uma única tarefa (Template String Limpo)
+
 function criarItemHTML(tarefa) {
   const isSelected = (val) => tarefa.status === val ? 'selected' : '';
   
@@ -59,22 +55,22 @@ function criarItemHTML(tarefa) {
         <label>
             Status:
             <select class="status-select">
-                <option value="a fazer" ${isSelected('a fazer')}>A fazer</option>
+                <option value="a fazer" ${isSelected('a fazer')}>A Fazer</option>
                 <option value="em andamento" ${isSelected('em andamento')}>Em andamento</option>
                 <option value="concluída" ${isSelected('concluída')}>Concluída</option>
             </select>
         </label>
 
         <div class="actions">
-          <button class="btn-update" aria-label="Salvar alteração de status">💾 Salvar</button>
-          <button class="btn-delete" aria-label="Excluir tarefa">🗑️ Excluir</button>
+          <button class="btn-update" aria-label="Salvar alteração de status"> Salvar</button>
+          <button class="btn-delete" aria-label="Excluir tarefa"> Excluir</button>
         </div>
       </div>
     </li>
   `;
 }
 
-// Renderiza a lista completa
+
 async function renderizarLista() {
   list.innerHTML = '<p style="padding:10px">Carregando tarefas...</p>';
   
@@ -89,11 +85,10 @@ async function renderizarLista() {
   list.innerHTML = data.tarefas.map(criarItemHTML).join("");
 }
 
-// =========================================================
-// 3. EVENTOS (Interatividade)
-// =========================================================
 
-// Evento: Adicionar Tarefa
+// EVENTOS (Interatividade)
+
+//Adicionar Tarefa
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   
@@ -119,7 +114,7 @@ form.addEventListener("submit", async (e) => {
   renderizarLista();
 });
 
-// Evento: Cliques na Lista (Delegação de Eventos)
+// Cliques na Lista
 list.addEventListener('click', async (e) => {
   const target = e.target;
   const li = target.closest('li');
@@ -144,5 +139,4 @@ list.addEventListener('click', async (e) => {
   }
 });
 
-// Inicialização
 renderizarLista();
