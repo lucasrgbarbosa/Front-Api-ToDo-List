@@ -1,92 +1,148 @@
+// =========================================================
+// 1. CAMADA DE API (Comunicação com o Servidor)
+// =========================================================
 const API_URL = "https://duo-project-mtrhee.onrender.com/api/v1/tarefas";
 
-async function getTarefas() {
-  const response = await fetch(API_URL);
-  return response.json();
+async function apiFetch(endpoint, method = 'GET', body = null) {
+  try {
+    const options = {
+      method,
+      headers: { "Content-Type": "application/json" }
+    };
+    if (body) options.body = JSON.stringify(body);
+
+    const response = await fetch(endpoint, options);
+    
+    // Tratamento simples de erro da API
+    if (!response.ok) throw new Error(`Erro na requisição: ${response.status}`);
+    
+    // Se for DELETE ou status 204, pode não ter JSON
+    if (response.status === 204) return null; 
+    
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    alert("Ocorreu um erro na comunicação com a API. Verifique o console.");
+    return null;
+  }
 }
 
-async function createTarefa(tarefa) {
-  const response = await fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(tarefa),
-  });
-  return response.json();
-}
+// Funções específicas da API
+const API = {
+  getTarefas: async () => await apiFetch(API_URL),
+  
+  createTarefa: async (tarefa) => await apiFetch(API_URL, 'POST', tarefa),
+  
+  deleteTarefa: async (id) => await apiFetch(`${API_URL}/${id}`, 'DELETE'),
+  
+  updateStatus: async (id, status) => await apiFetch(`${API_URL}/${id}/status`, 'PATCH', { status })
+};
 
-async function deleteTarefa(id) {
-  await fetch(`${API_URL}/${id}`, {
-    method: "DELETE",
-  });
-}
-
-async function updateStatus(id, status) {
-  const response = await fetch(`${API_URL}/${id}/status`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ status }),
-  });
-  return response.json();
-}
-
+// =========================================================
+// 2. CAMADA DE INTERFACE (Manipulação do DOM)
+// =========================================================
 const form = document.getElementById("task-form");
 const list = document.getElementById("task-list");
 
-async function loadTarefas() {
-  list.innerHTML = "";
-  const data = await getTarefas();
-
-  data.tarefas.forEach((tarefa) => {
-    const li = document.createElement("li");
-
-    li.innerHTML = `
-      <strong>${tarefa.titulo}</strong>
-      <span>${tarefa.descricao}</span>
-
-      <label>Status:</label>
-      <select class="status-select">
-        <option value="a fazer">A fazer</option>
-        <option value="em andamento">Em andamento</option>
-        <option value="concluída">Concluída</option>
-      </select>
-
-      <div class="actions">
-        <button class="status">Atualizar status</button>
-        <button class="delete">Excluir</button>
+// Gera o HTML de uma única tarefa (Template String Limpo)
+function criarItemHTML(tarefa) {
+  const isSelected = (val) => tarefa.status === val ? 'selected' : '';
+  
+  return `
+    <li data-id="${tarefa.id}" class="task-item">
+      <div class="task-info">
+        <strong>${tarefa.titulo}</strong>
+        <span>${tarefa.descricao}</span>
       </div>
-    `;
 
-    const statusSelect = li.querySelector(".status-select");
-    statusSelect.value = tarefa.status;
+      <div class="task-footer">
+        <label>
+            Status:
+            <select class="status-select">
+                <option value="a fazer" ${isSelected('a fazer')}>A fazer</option>
+                <option value="em andamento" ${isSelected('em andamento')}>Em andamento</option>
+                <option value="concluída" ${isSelected('concluída')}>Concluída</option>
+            </select>
+        </label>
 
-    // Atualizar status
-    li.querySelector(".status").onclick = async () => {
-      await updateStatus(tarefa.id, statusSelect.value);
-      loadTarefas();
-    };
-
-    // Excluir tarefa
-    li.querySelector(".delete").onclick = async () => {
-      await deleteTarefa(tarefa.id);
-      loadTarefas();
-    };
-
-    list.appendChild(li);
-  });
+        <div class="actions">
+          <button class="btn-update" aria-label="Salvar alteração de status">💾 Salvar</button>
+          <button class="btn-delete" aria-label="Excluir tarefa">🗑️ Excluir</button>
+        </div>
+      </div>
+    </li>
+  `;
 }
 
+// Renderiza a lista completa
+async function renderizarLista() {
+  list.innerHTML = '<p style="padding:10px">Carregando tarefas...</p>';
+  
+  const data = await API.getTarefas();
+  
+  if (!data || !data.tarefas || data.tarefas.length === 0) {
+    list.innerHTML = '<p style="padding:10px">Nenhuma tarefa encontrada.</p>';
+    return;
+  }
+
+  // Mapeia os dados para HTML e insere na lista
+  list.innerHTML = data.tarefas.map(criarItemHTML).join("");
+}
+
+// =========================================================
+// 3. EVENTOS (Interatividade)
+// =========================================================
+
+// Evento: Adicionar Tarefa
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const originalText = submitBtn.textContent;
+  
+  // Feedback visual de carregamento
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Enviando...";
 
-  const tarefa = {
-    titulo: titulo.value,
-    descricao: descricao.value,
-    status: status.value,
+  const novaTarefa = {
+    titulo: form.querySelector('input[name="titulo"]').value,
+    descricao: form.querySelector('input[name="descricao"]').value,
+    status: form.querySelector('select[name="status"]').value,
   };
 
-  await createTarefa(tarefa);
+  await API.createTarefa(novaTarefa);
+
   form.reset();
-  loadTarefas();
+  submitBtn.disabled = false;
+  submitBtn.textContent = originalText;
+  
+  renderizarLista();
 });
 
-loadTarefas();
+// Evento: Cliques na Lista (Delegação de Eventos)
+list.addEventListener('click', async (e) => {
+  const target = e.target;
+  const li = target.closest('li');
+  
+  if (!li) return;
+  
+  const id = li.dataset.id;
+
+  // Botão Excluir
+  if (target.classList.contains('btn-delete')) {
+    if(confirm("Deseja realmente excluir esta tarefa?")) {
+      await API.deleteTarefa(id);
+      renderizarLista();
+    }
+  }
+
+  // Botão Atualizar
+  if (target.classList.contains('btn-update')) {
+    const novoStatus = li.querySelector('.status-select').value;
+    await API.updateStatus(id, novoStatus);
+    alert('Status atualizado com sucesso!');
+  }
+});
+
+// Inicialização
+renderizarLista();
