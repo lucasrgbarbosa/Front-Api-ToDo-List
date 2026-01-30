@@ -58,6 +58,8 @@ Abra o projeto: Basta abrir o arquivo index.html em qualquer navegador moderno.
 
 Dica: Para uma melhor experiência (e evitar bloqueios de CORS em alguns navegadores), recomendo usar a extensão Live Server do VS Code.
 
+🖥️ Deploy: https://lucasrgbarbosa.github.io/Front-Api-ToDo-List/
+
 🔗 API Utilizada
 O projeto consome a seguinte API REST:
 
