@@ -19,6 +19,9 @@
 body {
   background: var(--bg-color);
   color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 
 }
 
@@ -42,6 +45,8 @@ main {
   gap: 20px;
   max-width: 1000px;
   margin: 0 auto;
+  flex: 1; 
+  width: 100%;
 }
 
 /* Estilos do Formulário */
@@ -98,7 +103,6 @@ button[type="submit"] {
 
 button[type="submit"]:hover { background: var(--primary-hover); }
 
-
 .task-list { 
   list-style: none; 
   display: flex;
@@ -123,8 +127,6 @@ li {
 
 li strong { font-size: 1.1rem; display: block; margin-bottom: 4px;}
 li span { color: #666; font-size: 0.95rem; }
-
-
 
 .task-footer {
   display: flex;
@@ -194,7 +196,7 @@ li span { color: #666; font-size: 0.95rem; }
     flex-direction: row;
     height: auto;
     margin-bottom: auto;
-    
+    flex: 1;
   }
   
   header{
